@@ -7,13 +7,13 @@ public class ExitGame : MonoBehaviour
     private InputAction quitAction;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         quitAction = InputSystem.actions.FindAction("quit");
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (quitAction.WasPressedThisFrame())
         { 

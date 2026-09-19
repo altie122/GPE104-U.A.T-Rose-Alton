@@ -12,23 +12,19 @@ public class ChangeSpriteLocation : MonoBehaviour
     public float minY = -1f;
     public float maxY = 1f;
     
-    // Other Variables
-    private Transform spriteTransformer;
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         interactAction = InputSystem.actions.FindAction("interact");
-        spriteTransformer = GetComponent<Transform>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (interactAction.WasPressedThisFrame())
         {
             // Change sprite's location to be a random point between the min and max values for both X and Y (Z stays at 0)
-            spriteTransformer.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY));
+            transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY));
         }
     }
 }
