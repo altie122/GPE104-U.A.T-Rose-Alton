@@ -5,7 +5,6 @@ public class ChangeSpriteLocation : MonoBehaviour
 {
     // Variables to hold input actions
     private InputAction interactAction;
-    private InputAction quitAction;
     
     // Min and Max values
     public float minX = -1f;
@@ -20,7 +19,6 @@ public class ChangeSpriteLocation : MonoBehaviour
     void Start()
     {
         interactAction = InputSystem.actions.FindAction("interact");
-        quitAction = InputSystem.actions.FindAction("quit");
         spriteTransformer = GetComponent<Transform>();
     }
 
@@ -29,11 +27,8 @@ public class ChangeSpriteLocation : MonoBehaviour
     {
         if (interactAction.WasPressedThisFrame())
         {
+            // Change sprite's location to be a random point between the min and max values for both X and Y (Z stays at 0)
             spriteTransformer.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY));
-        }
-        if (quitAction.WasPressedThisFrame())
-        { 
-            Application.Quit();
         }
     }
 }
