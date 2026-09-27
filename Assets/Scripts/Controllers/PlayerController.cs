@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : Controller
 {
     
+    // Game manager
+    public GameManager gameManager;
+    
     // Input variables
     
     // Input system
@@ -129,7 +132,10 @@ public class PlayerController : Controller
     
     public override void Update()
     {
-        MakeDecisions();
+        if (!gameManager.isPaused)
+        {
+            MakeDecisions();
+        }
     }
 
     public override void OnDisable()
