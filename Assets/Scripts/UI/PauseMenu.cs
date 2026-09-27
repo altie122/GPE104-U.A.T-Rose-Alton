@@ -1,7 +1,9 @@
 using System;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     private Button continueButton;
     private Button settingsButton;
     private Button exitButton;
+    private Button restartButton;
     
     private VisualElement pauseMenuRoot;
     
@@ -47,6 +50,11 @@ public class PauseMenu : MonoBehaviour
         {
             exitButton.clicked -= ExitGameCallback;
         }
+
+        if (restartButton != null)
+        {
+            restartButton.clicked -= RestartGameCallback;
+        }
     }
     
     void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)
@@ -61,12 +69,14 @@ public class PauseMenu : MonoBehaviour
         continueButton = pauseMenuRoot.Q<Button>("ContinueBtn");
         settingsButton = pauseMenuRoot.Q<Button>("SettingsBtn");
         exitButton = pauseMenuRoot.Q<Button>("ExitBtn");
+        restartButton = pauseMenuRoot.Q<Button>("RestartBtn");
         
         pauseMenuRoot.style.display = DisplayStyle.None;
         
         continueButton.clicked += ResumeGameCallback;
         settingsButton.clicked += SettingsMenuCallback;
         exitButton.clicked += ExitGameCallback;
+        restartButton.clicked += RestartGameCallback;
     }
 
     private void PauseGame(InputAction.CallbackContext ctx)
@@ -102,5 +112,12 @@ public class PauseMenu : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+
+    private void RestartGameCallback()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        Time.timeScale = 1f;
+        gameManager.isPaused = false;
     }
 }

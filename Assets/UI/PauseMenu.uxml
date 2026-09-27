@@ -4,6 +4,7 @@
         <ui:Label text="Pause Menu" name="Title" class="title"/>
         <ui:Button text="Continue" name="ContinueBtn" class="button"/>
         <ui:Button text="Settings" name="SettingsBtn" class="button"/>
+        <ui:Button text="Restart" name="RestartBtn" enable-rich-text="true" class="button"/>
         <ui:Button text="Exit" name="ExitBtn" class="button"/>
     </ui:VisualElement>
 </ui:UXML>

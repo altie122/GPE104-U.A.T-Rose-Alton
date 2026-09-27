@@ -39,6 +39,12 @@ public class PlayerController : Controller
     
     public override void MakeDecisions()
     {
+        // Check if pawn exists, if not, return before control code runs
+        if (!controlledPawn)
+        {
+            return;
+        }
+
         if (turboAction.IsPressed())
         {
             // Faster Movement is used
@@ -140,6 +146,9 @@ public class PlayerController : Controller
 
     public override void OnDisable()
     {
-        inputSystem.Disable();
+        if (inputSystem != null)
+        {
+            inputSystem.Disable();
+        }
     }
 }
