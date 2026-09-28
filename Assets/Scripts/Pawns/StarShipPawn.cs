@@ -16,9 +16,12 @@ public class StarShipPawn : Pawn
     public float turboRotateSpeed = 720f;
     public float worldSpaceSpeed = 1f;
     
+    // Shooting
+    private Shooter shooter;
+    
     public override void Start()
     {
-        
+        shooter = GetComponent<Shooter>();
     }
 
     public override void Update()
@@ -90,5 +93,13 @@ public class StarShipPawn : Pawn
     public override void MoveRightWorld()
     {
         transform.position += Vector3.right * worldSpaceSpeed;
+    }
+
+    public override void Shoot()
+    {
+        if (shooter)
+        {
+            shooter.Shoot();
+        }
     }
 }

@@ -4,10 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : Controller
 {
-    
-    // Game manager
-    public GameManager gameManager;
-    
     // Input variables
     
     // Input system
@@ -36,6 +32,9 @@ public class PlayerController : Controller
     
     // Turbo
     private InputAction turboAction;
+    
+    // Shoot
+    private InputAction shootAction;
     
     public override void MakeDecisions()
     {
@@ -118,10 +117,19 @@ public class PlayerController : Controller
         {
             controlledPawn.Teleport();
         }
+
+        if (shootAction.WasPressedThisFrame())
+        {
+            controlledPawn.Shoot();
+        }
     }
     
     public override void Start()
     {
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.playerController = this;
+        }
         inputSystem = new InputSystem_Actions();
         teleportAction = inputSystem.Player.Teleport;
         moveForwardLocalAction = inputSystem.Player.MoveForwardLocal;
@@ -133,12 +141,13 @@ public class PlayerController : Controller
         moveRightWorldAction = inputSystem.Player.MoveRightWorld;
         moveLeftWorldAction = inputSystem.Player.MoveLeftWorld;
         turboAction = inputSystem.Player.Turbo;
+        shootAction = inputSystem.Player.Shoot;
         inputSystem.Enable();
     }
-    
+
     public override void Update()
     {
-        if (!gameManager.isPaused)
+        if (!GameManager.instance.isPaused)
         {
             MakeDecisions();
         }

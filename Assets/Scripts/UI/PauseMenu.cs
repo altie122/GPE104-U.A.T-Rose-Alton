@@ -81,14 +81,18 @@ public class PauseMenu : MonoBehaviour
 
     private void PauseGame(InputAction.CallbackContext ctx)
     {
-        if (gameManager.isPaused)
+        if (!GameManager.instance.isPauseMenuEnabled)
+        {
+            return;
+        }
+        if (GameManager.instance.isPaused)
         {
             ResumeGameCallback();
         }
         else
         {
             Time.timeScale = 0f;
-            gameManager.isPaused = true;
+            GameManager.instance.isPaused = true;
             pauseMenuRoot.style.display = DisplayStyle.Flex;
         }
     }
@@ -96,7 +100,7 @@ public class PauseMenu : MonoBehaviour
     private void ResumeGameCallback()
     {
         Time.timeScale = 1f;
-        gameManager.isPaused = false;
+        GameManager.instance.isPaused = false;
         pauseMenuRoot.style.display = DisplayStyle.None;
     }
 
@@ -116,8 +120,10 @@ public class PauseMenu : MonoBehaviour
 
     private void RestartGameCallback()
     {
+        if (GameManager.instance)
+        {
+            GameManager.instance.ResetGameState();
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
-        Time.timeScale = 1f;
-        gameManager.isPaused = false;
     }
 }

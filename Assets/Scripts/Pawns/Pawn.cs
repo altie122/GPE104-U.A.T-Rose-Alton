@@ -37,5 +37,8 @@ public abstract class Pawn : MonoBehaviour
     public abstract void MoveLeftWorld();
     
     public abstract void MoveRightWorld();
+    
+    // Shoot
+    public abstract void Shoot();
 }
 
