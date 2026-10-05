@@ -29,8 +29,15 @@
 
 }
 
-.title {
+.title, .title-1 {
     -unity-text-auto-size: best-fit 5px 100px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: aliceblue;
+}
+
+.title-2 {
+    -unity-text-auto-size: best-fit 5px 50px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     color: aliceblue;

@@ -19,6 +19,8 @@ public class PauseMenu : MonoBehaviour
     
     private VisualElement pauseMenuRoot;
     
+    public SettingsMenu settingsMenu;
+    
     public GameManager gameManager;
     
     public void OnEnable()
@@ -106,7 +108,15 @@ public class PauseMenu : MonoBehaviour
 
     private void SettingsMenuCallback()
     {
-        // TODO: Implement settings menu
+        settingsMenu.ShowSettings();
+        pauseMenuRoot.style.display = DisplayStyle.None;
+        inputSystem.Player.Pause.performed -= PauseGame;
+    }
+
+    public void ShowPauseMenu()
+    {
+        pauseMenuRoot.style.display = DisplayStyle.Flex;
+        inputSystem.Player.Pause.performed += PauseGame;
     }
 
     private void ExitGameCallback()

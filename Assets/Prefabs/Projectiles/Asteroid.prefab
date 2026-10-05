@@ -244,3 +244,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd9706b33fb61b4290101cd69d2ba0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathDestroyManager
+  scoreValue: 10

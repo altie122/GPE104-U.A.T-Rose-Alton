@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -17,6 +18,10 @@ public class GameManager : MonoBehaviour
     public EndScreen endScreen;
     
     public bool isGameOver;
+
+    public int score;
+
+    public TMP_Text scoreText;
 
     private void Awake()
     {
@@ -50,6 +55,11 @@ public class GameManager : MonoBehaviour
         {
             LoseGame();
         }
+
+        if (scoreText)
+        {
+            scoreText.text = "" + score;
+        }
     }
 
     public void ResetGameState()
@@ -57,6 +67,7 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         isPauseMenuEnabled = true;
         isGameOver = false;
+        score = 0;
         
         Time.timeScale = 1f;
 

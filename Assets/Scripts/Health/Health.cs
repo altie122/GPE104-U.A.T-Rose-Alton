@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
@@ -7,9 +8,16 @@ public class Health : MonoBehaviour
 
     private Death deathComponent;
 
+    public Image healthBar;
+
     private void Start()
     {
         deathComponent = GetComponent<Death>();
+
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
     }
 
     public void Heal(float healAmount)
@@ -17,6 +25,11 @@ public class Health : MonoBehaviour
         currentHealth += healAmount;
         
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
     }
     
     public void TakeDamage(float damageAmount)
@@ -24,6 +37,11 @@ public class Health : MonoBehaviour
         currentHealth -= damageAmount;
         
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
 
         if (currentHealth <= 0 && deathComponent != null)
         {
