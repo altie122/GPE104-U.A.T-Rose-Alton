@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
@@ -26,9 +27,26 @@ public class SettingsMenu : MonoBehaviour
     
     private MultiColumnListView controllerList;
 
+    private Slider masterAudioSlider;
+    
+    private Slider musicAudioSlider;
+
+    private Slider sfxAudioSlider;
+    
+    public AudioMixer audioMixer;
+
     private VisualElement settingsMenuRoot;
     
+    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+    
     public PauseMenu pauseMenu;
+    
+    private struct AudioSliderSettings
+    {
+        public float value;
+        public float lowValue;
+        public float highValue;
+    }
     
     public void OnEnable()
     {
@@ -47,9 +65,18 @@ public class SettingsMenu : MonoBehaviour
 
         keyboardMouseRows.Clear();
         controllerRows.Clear();
+        
+        masterAudioSlider?.UnregisterAllRemovableCallbacks();
+        musicAudioSlider?.UnregisterAllRemovableCallbacks();
+        sfxAudioSlider?.UnregisterAllRemovableCallbacks();
 
         inputSystem?.Dispose();
         inputSystem = null;
+        
+        if (GameManager.instance)
+        {
+            GameManager.instance.settingsMenu = null;
+        }
     }
 
     private void OnUIReload(
@@ -58,6 +85,12 @@ public class SettingsMenu : MonoBehaviour
         int version
     )
     {
+        
+        if (GameManager.instance)
+        {
+            GameManager.instance.settingsMenu = this;
+        }
+        
         inputSystem = new InputSystem_Actions();
         
         inputSystem.Enable();
@@ -65,6 +98,22 @@ public class SettingsMenu : MonoBehaviour
         keyboardMouseList = rootElement.Q<MultiColumnListView>("KM-Controls");
         
         controllerList = rootElement.Q<MultiColumnListView>("Controller-Controls");
+        
+        masterAudioSlider = rootElement.Q<Slider>("MasterAudio");
+        
+        musicAudioSlider = rootElement.Q<Slider>("MusicAudio");
+        
+        sfxAudioSlider = rootElement.Q<Slider>("SFXAudio");
+        
+        LoadMasterAudioSlider();
+        LoadMusicAudioSlider();
+        LoadSFXAudioSlider();
+
+        masterAudioSlider.RegisterValueChangedCallback(OnMasterAudioChanged);
+
+        musicAudioSlider.RegisterValueChangedCallback(OnMusicAudioChanged);
+
+        sfxAudioSlider.RegisterValueChangedCallback(OnSFXAudioChanged);
 
         if (keyboardMouseList == null || controllerList == null)
         {
@@ -199,20 +248,36 @@ public class SettingsMenu : MonoBehaviour
                 && button.userData is BindingRow row
             )
             {
-                OnRebindRequested(row);
+                OnRebindRequested(row, button);
             }
         };
 
         return button;
     }
 
-    private void OnRebindRequested(BindingRow row)
+    private void OnRebindRequested(BindingRow row, Button rebindButton)
     {
-        Debug.Log(
-            $"Rebind requested: {row.action.name}, "
-            + $"binding index {row.bindingIndex}",
-            this
-        );
+        inputSystem.Player.Disable();
+        rebindButton.text = "Choose a new button";
+        rebindButton.SetEnabled(false);
+        rebindingOperation = row.action.PerformInteractiveRebinding().OnComplete(operation => RebindCompleted(row, rebindButton));
+        rebindingOperation.Start();
+    }
+
+    private void RebindCompleted(BindingRow row, Button rebindButton)
+    {
+        rebindingOperation.Dispose();
+
+        string newBinding = row.action.bindings[0].effectivePath;
+        
+        rebindButton.text = "Rebind";
+        
+        rebindButton.SetEnabled(true);
+        
+        inputSystem.Player.Enable();
+
+        string rebinds = inputSystem.SaveBindingOverridesAsJson();
+        PlayerPrefs.SetString("rebinds", rebinds);
     }
 
     private static void ClearList(MultiColumnListView listView)
@@ -237,5 +302,121 @@ public class SettingsMenu : MonoBehaviour
         inputSystem.Player.Pause.performed -= HideSettings;
         settingsMenuRoot.style.display = DisplayStyle.None;
         pauseMenu.ShowPauseMenu();
+    }
+    
+    private void SaveAudioSlider(
+        string mixerParameter,
+        Slider slider,
+        float value
+    )
+    {
+        var settings = new AudioSliderSettings
+        {
+            value = value,
+            lowValue = slider.lowValue,
+            highValue = slider.highValue
+        };
+
+        PlayerPrefs.SetString(
+            $"{mixerParameter}Slider",
+            JsonUtility.ToJson(settings)
+        );
+
+        GameManager.instance.SetAudioVolume(
+            mixerParameter,
+            slider.lowValue,
+            slider.highValue,
+            value
+        );
+    }
+    
+    private void OnMasterAudioChanged(ChangeEvent<float> evt)
+    {
+        SaveAudioSlider("MasterVolume", masterAudioSlider, evt.newValue);
+    }
+
+    private void OnMusicAudioChanged(ChangeEvent<float> evt)
+    {
+        SaveAudioSlider("MusicVolume", musicAudioSlider, evt.newValue);
+    }
+
+    private void OnSFXAudioChanged(ChangeEvent<float> evt)
+    {
+        SaveAudioSlider("SFXVolume", sfxAudioSlider, evt.newValue);
+    }
+    
+    public void LoadMasterAudioSlider()
+    {
+        const string key = "MasterVolumeSlider";
+
+        if (!PlayerPrefs.HasKey(key))
+        {
+            return;
+        }
+
+        var settings = JsonUtility.FromJson<AudioSliderSettings>(
+            PlayerPrefs.GetString(key)
+        );
+
+        masterAudioSlider.lowValue = settings.lowValue;
+        masterAudioSlider.highValue = settings.highValue;
+        masterAudioSlider.SetValueWithoutNotify(settings.value);
+
+        GameManager.instance.SetAudioVolume(
+            "MasterVolume",
+            settings.lowValue,
+            settings.highValue,
+            settings.value
+        );
+    }
+    
+    public void LoadMusicAudioSlider()
+    {
+        const string key = "MusicVolumeSlider";
+
+        if (!PlayerPrefs.HasKey(key))
+        {
+            return;
+        }
+
+        var settings = JsonUtility.FromJson<AudioSliderSettings>(
+            PlayerPrefs.GetString(key)
+        );
+
+        musicAudioSlider.lowValue = settings.lowValue;
+        musicAudioSlider.highValue = settings.highValue;
+        musicAudioSlider.SetValueWithoutNotify(settings.value);
+
+        GameManager.instance.SetAudioVolume(
+            "MusicVolume",
+            settings.lowValue,
+            settings.highValue,
+            settings.value
+        );
+    }
+    
+    public void LoadSFXAudioSlider()
+    {
+        const string key = "SFXVolumeSlider";
+
+        if (!PlayerPrefs.HasKey(key))
+        {
+            return;
+        }
+
+        var settings = JsonUtility.FromJson<AudioSliderSettings>(
+            PlayerPrefs.GetString(key)
+        );
+
+        sfxAudioSlider.lowValue = settings.lowValue;
+        sfxAudioSlider.highValue = settings.highValue;
+        sfxAudioSlider.SetValueWithoutNotify(settings.value);
+
+        GameManager.instance.SetAudioVolume(
+            "SFXVolume",
+            settings.lowValue,
+            settings.highValue,
+            settings.value
+        );
     }
 }

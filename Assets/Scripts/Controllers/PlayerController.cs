@@ -142,6 +142,11 @@ public class PlayerController : Controller
         moveLeftWorldAction = inputSystem.Player.MoveLeftWorld;
         turboAction = inputSystem.Player.Turbo;
         shootAction = inputSystem.Player.Shoot;
+        string rebinds = PlayerPrefs.GetString("rebinds");
+        if (!string.IsNullOrEmpty(rebinds))
+        {
+            inputSystem.LoadBindingOverridesFromJson(rebinds);
+        }
         inputSystem.Enable();
     }
 

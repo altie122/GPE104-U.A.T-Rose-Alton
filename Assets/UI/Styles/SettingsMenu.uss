@@ -3,8 +3,3 @@
 .main {
     width: 45%;
 }
-
-.unity-tab-view {
-    height: 100%;
-    width: 100%;
-}

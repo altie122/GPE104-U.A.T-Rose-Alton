@@ -26,6 +26,11 @@ public class EndScreen : MonoBehaviour
         {
             restartButton.clicked -= RestartGameCallback;
         }
+        
+        if (GameManager.instance)
+        {
+            GameManager.instance.endScreen = null;
+        }
     }
     
     void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)

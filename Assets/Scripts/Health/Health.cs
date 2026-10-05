@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
@@ -9,6 +10,10 @@ public class Health : MonoBehaviour
     private Death deathComponent;
 
     public Image healthBar;
+    
+    public AudioSource audioSource;
+    public AudioMixerGroup audioMixerGroup;
+    public AudioClip takeDamageSound;
 
     private void Start()
     {
@@ -37,6 +42,16 @@ public class Health : MonoBehaviour
         currentHealth -= damageAmount;
         
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        if (audioSource)
+        {
+            if (audioMixerGroup)
+            {
+                audioSource.outputAudioMixerGroup = audioMixerGroup;
+            }
+            
+            audioSource.PlayOneShot(takeDamageSound);
+        }
         
         if (healthBar != null)
         {
