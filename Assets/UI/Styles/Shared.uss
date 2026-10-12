@@ -14,7 +14,7 @@
     border-width: 1px;
     border-radius: 15px;
     border-color: aliceblue;
-    -unity-text-auto-size: best-fit 5px 25px;
+    font-size: 10px;
     align-items: auto;
     justify-content: flex-start;
     margin-top: 20px;
@@ -41,4 +41,8 @@
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     color: aliceblue;
+}
+
+.link {
+    cursor: link;
 }

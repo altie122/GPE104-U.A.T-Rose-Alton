@@ -38,6 +38,10 @@ public abstract class Pawn : MonoBehaviour
     
     public abstract void MoveRightWorld();
     
+    // Other Movement
+    
+    public abstract void Move(Vector3 moveVector);
+    
     // Shoot
     public abstract void Shoot();
 }

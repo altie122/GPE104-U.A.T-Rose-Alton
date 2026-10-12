@@ -4,20 +4,26 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    [Header("Health Settings")]
     public float currentHealth = 100;
     public float maxHealth = 100;
-
-    private Death deathComponent;
-
+    public bool useDeathComponent = true;
     public Image healthBar;
+
     
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioMixerGroup audioMixerGroup;
     public AudioClip takeDamageSound;
+    public AudioClip deathSound;
 
+    private DeathManager deathComponent;
     private void Start()
     {
-        deathComponent = GetComponent<Death>();
+        if (useDeathComponent)
+        {
+            deathComponent = GetComponent<DeathManager>();
+        }
 
         if (healthBar != null)
         {
@@ -60,7 +66,25 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0 && deathComponent != null)
         {
+            PlayDeathSound();
             deathComponent.Die();
         }
+    }
+
+    private void PlayDeathSound()
+    {
+        GameObject soundObject = new GameObject("Death SFX");
+        soundObject.transform.position = transform.position;
+
+        AudioSource source = soundObject.AddComponent<AudioSource>();
+
+        source.playOnAwake = false;
+        source.clip = deathSound;
+        source.outputAudioMixerGroup = audioMixerGroup;
+        source.spatialBlend = 1f;
+
+        source.Play();
+
+        Destroy(soundObject, deathSound.length);
     }
 }

@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 5879917986308506346}
   - component: {fileID: 1136196704632433576}
   - component: {fileID: 7201629496289589291}
-  - component: {fileID: 5518171407014633191}
+  - component: {fileID: 7161368783168254273}
+  - component: {fileID: 4149380875197041607}
   m_Layer: 0
   m_Name: StarShipPawn
   m_TagString: Untagged
@@ -112,10 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6120c0b54fe746c418c1bdf16fe5c75e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StarShipPawn
-  minX: -3
-  maxX: 3
-  minY: -3
-  maxY: 3
   normalSpeed: 5
   turboSpeed: 10
   normalRotateSpeed: 360
@@ -135,10 +132,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   currentHealth: 100
   maxHealth: 100
+  useDeathComponent: 0
   healthBar: {fileID: 0}
-  audioSource: {fileID: 5518171407014633191}
+  audioSource: {fileID: 0}
   audioMixerGroup: {fileID: 4317377264398088339, guid: b941dabd7aeffc84b95f55aa1868af45, type: 2}
   takeDamageSound: {fileID: 8300000, guid: 45675a698fdfd884eb42cadf1665b374, type: 3}
+  deathSound: {fileID: 8300000, guid: bc325d6b6f26f5e4291a87a2687d5b33, type: 3}
 --- !u!60 &1411324399160330306
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -239,103 +238,33 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2270321355932640028}
   m_Enabled: 1
---- !u!82 &5518171407014633191
-AudioSource:
+--- !u!114 &7161368783168254273
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2270321355932640028}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0268783a4503dc4ea0270bd46b155b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SideWarping
+  parentTransform: {fileID: 152673581631396735}
+--- !u!114 &4149380875197041607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270321355932640028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2eb5b4593295174394d0ca47e204d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LivesHandler
+  healthComponent: {fileID: 3119362547526762030}
+  deathComponent: {fileID: 1136196704632433576}
 --- !u!1 &4696146352126531910
 GameObject:
   m_ObjectHideFlags: 0

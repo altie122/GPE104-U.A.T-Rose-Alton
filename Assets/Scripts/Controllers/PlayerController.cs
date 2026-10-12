@@ -36,7 +36,7 @@ public class PlayerController : Controller
     // Shoot
     private InputAction shootAction;
     
-    public override void MakeDecisions()
+    public void MakeDecisions()
     {
         // Check if pawn exists, if not, return before control code runs
         if (!controlledPawn)
@@ -124,7 +124,7 @@ public class PlayerController : Controller
         }
     }
     
-    public override void Start()
+    public void Start()
     {
         if (GameManager.instance != null)
         {
@@ -142,15 +142,10 @@ public class PlayerController : Controller
         moveLeftWorldAction = inputSystem.Player.MoveLeftWorld;
         turboAction = inputSystem.Player.Turbo;
         shootAction = inputSystem.Player.Shoot;
-        string rebinds = PlayerPrefs.GetString("rebinds");
-        if (!string.IsNullOrEmpty(rebinds))
-        {
-            inputSystem.LoadBindingOverridesFromJson(rebinds);
-        }
         inputSystem.Enable();
     }
 
-    public override void Update()
+    public void Update()
     {
         if (!GameManager.instance.isPaused)
         {
@@ -158,7 +153,7 @@ public class PlayerController : Controller
         }
     }
 
-    public override void OnDisable()
+    public void OnDisable()
     {
         if (inputSystem != null)
         {

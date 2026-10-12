@@ -9,8 +9,8 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rigidBody;
     
     public AudioClip shootSfx;
-    [SerializeField]
-    private AudioMixerGroup shootMixerGroup;
+    
+    public AudioMixerGroup shootMixerGroup;
 
     private void Start()
     {

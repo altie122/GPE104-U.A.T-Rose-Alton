@@ -8,31 +8,5 @@
             <ui:Slider label="Music" value="42" high-value="100" name="MusicAudio"/>
             <ui:Slider label="SFX" value="42" high-value="100" name="SFXAudio"/>
         </ui:VisualElement>
-        <ui:TabView>
-            <ui:Tab label="Keyboard &amp; Mouse" name="KMTab" view-data-key="KM">
-                <ui:VisualElement name="ControlsSettings-KM" view-data-key="KM" class="ControlsSettings-KM" style="flex-grow: 1;">
-                    <ui:Label text="K&amp;M controls" name="Title" class="title-2"/>
-                </ui:VisualElement>
-                <ui:MultiColumnListView columns="" sort-column-descriptions="" name="KM-Controls" style="height: 220px;">
-                    <ui:Columns>
-                        <ui:Column title="Title" name="Title" stretchable="true"/>
-                        <ui:Column name="CurrentBind" title="Current Bind" stretchable="true"/>
-                        <ui:Column name="RebindAction" title="Rebind" stretchable="true"/>
-                    </ui:Columns>
-                </ui:MultiColumnListView>
-            </ui:Tab>
-            <ui:Tab label="Controller" name="ControllerTab" view-data-key="Controller">
-                <ui:VisualElement name="ControlsSettings-Controller" view-data-key="Controller" class="ControlsSettings-Controller" style="flex-grow: 1;">
-                    <ui:Label text="Controller" name="Title" class="title-2"/>
-                </ui:VisualElement>
-                <ui:MultiColumnListView columns="" sort-column-descriptions="" name="Controller-Controls" style="height: 220px;">
-                    <ui:Columns>
-                        <ui:Column title="Title" name="Title" stretchable="true"/>
-                        <ui:Column name="CurrentBind" title="Current Bind" stretchable="true"/>
-                        <ui:Column name="RebindAction" title="Rebind" stretchable="true"/>
-                    </ui:Columns>
-                </ui:MultiColumnListView>
-            </ui:Tab>
-        </ui:TabView>
     </ui:VisualElement>
 </ui:UXML>

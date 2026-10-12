@@ -4,10 +4,10 @@ public class StarShipPawn : Pawn
 {
     
     // Min and max teleport values
-    public float minX = -1f;
-    public float maxX = 1f;
-    public float minY = -1f;
-    public float maxY = 1f;
+    private float minX;
+    private float maxX;
+    private float minY;
+    private float maxY;
     
     // Movement speeds
     public float normalSpeed = 5f;
@@ -22,11 +22,19 @@ public class StarShipPawn : Pawn
     public override void Start()
     {
         shooter = GetComponent<Shooter>();
+        minX = GameManager.instance.worldBoundaryMinX;
+        maxX = GameManager.instance.worldBoundaryMaxX;
+        minY = GameManager.instance.worldBoundaryMinY;
+        maxY = GameManager.instance.worldBoundaryMaxY;
+        GameManager.instance.playerGameObject = gameObject;
     }
 
     public override void Update()
     {
-        
+        if (!GameManager.instance.playerGameObject)
+        {
+            GameManager.instance.playerGameObject = gameObject;
+        }
     }
 
     public override void Teleport()
@@ -93,6 +101,11 @@ public class StarShipPawn : Pawn
     public override void MoveRightWorld()
     {
         transform.position += Vector3.right * worldSpaceSpeed;
+    }
+
+    public override void Move(Vector3 moveVector)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void Shoot()

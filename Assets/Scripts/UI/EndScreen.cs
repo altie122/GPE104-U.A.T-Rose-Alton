@@ -51,9 +51,10 @@ public class EndScreen : MonoBehaviour
         restartButton.clicked += RestartGameCallback;
     }
 
-    public void ShowEndScreen(string message)
+    public void ShowEndScreen(string title, string subtitle)
     {
-        pauseMenuRoot.Q<Label>("Title").text = message;
+        pauseMenuRoot.Q<Label>("Title").text = title;
+        pauseMenuRoot.Q<Label>("Subtitle").text = subtitle;
         pauseMenuRoot.style.display = DisplayStyle.Flex;
     }
     

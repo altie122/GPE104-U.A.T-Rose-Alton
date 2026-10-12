@@ -1,5 +1,3 @@
-using System;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -57,6 +55,13 @@ public class PauseMenu : MonoBehaviour
         {
             restartButton.clicked -= RestartGameCallback;
         }
+    }
+    
+    private void OnDestroy()
+    {
+        inputSystem?.Disable();
+        inputSystem?.Dispose();
+        inputSystem = null;
     }
     
     void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)
